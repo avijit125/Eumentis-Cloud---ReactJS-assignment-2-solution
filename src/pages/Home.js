@@ -52,7 +52,7 @@ const Home = () => {
   updatedObj,
   ...users.slice(objIndex + 1)
         ]
-        //console.log(updatedUser)
+        //console.log(updatedUser) style={{marginTop:"1.6rem"}} span={6}
         dispatch(updateUser(updatedUser))
     }
 
@@ -61,7 +61,7 @@ const Home = () => {
         <>
         <Row >
             {users && users.map((item , index)=>(
-                <Col style={{marginTop:"1.6rem"}} span={6}>
+                <Col xs={24} sm={12} md={12} lg={8} xl={6} style={{marginTop:"1.6rem",padding:"2.8rem"}} >
                     <Cards key={item.id} name={item.name} email={item.email} id={item.id} username={item.username} phone={item.phone} website={item.website} filterUser={filterUser} updatedUser={updatedUser} updatedUserLike={updatedUserLike} isLike={item?.islike}  />  
                 </Col>
             ))}

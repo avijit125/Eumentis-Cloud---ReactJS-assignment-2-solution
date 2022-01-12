@@ -171,8 +171,3 @@ const Cards = ({name,email,id,username,phone,website,filterUser,updatedUser,upda
 export default Cards
 
 
-{/* <p>Please fill full inputs field </p>
-<Input  value={nameData} onChange={(e)=> setNameData(e.target.value) } placeholder='enter new name'/>
- <Input style={{marginTop:"10px"}} value={emailData} onChange={(e)=> setEmailData(e.target.value) } placeholder='enter new email'/>
- <Input style={{marginTop:"10px"}} value={phoneData} onChange={(e)=> setPhoneData(e.target.value) } placeholder='enter new phone'/>
- <Input style={{marginTop:"10px"}} value={websiteData} onChange={(e)=> setWebsiteData(e.target.value) } placeholder='enter new website'/> */}
