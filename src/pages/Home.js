@@ -26,9 +26,9 @@ const Home = () => {
        dispatch(deleteUser(filteredUsers))
     }
 
-    const updatedUser = ({id,nameData,emailData,phoneData,websiteData})=>{
+    const updatedUser = ({id,name, email,phone,website})=>{
         const objIndex = users.findIndex(obj => obj.id === id);
-        const updatedObj = { ...users[objIndex],name: nameData ,email: emailData,phone: phoneData, website: websiteData};
+        const updatedObj = { ...users[objIndex],id,name, email,phone,website};
         const updatedUser = [
             ...users.slice(0, objIndex),
   updatedObj,

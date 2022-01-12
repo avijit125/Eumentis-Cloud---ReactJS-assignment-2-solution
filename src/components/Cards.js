@@ -1,32 +1,46 @@
-import React,{useState} from 'react';
-import { Button, Card, Input, Modal} from 'antd';
+import React,{useState, useEffect} from 'react';
+import { Button, Card, Input, Modal, Form} from 'antd';
 import 'antd/dist/antd.min.css';
-import { EditOutlined, HeartOutlined, DeleteFilled, HeartFilled, CloudFilled, PhoneFilled, GoogleCircleFilled } from '@ant-design/icons';
+import { EditOutlined, HeartOutlined, DeleteFilled, HeartFilled,  PhoneFilled, MailOutlined, GlobalOutlined } from '@ant-design/icons';
 
 
 
 
-const Cards = ({name,email,id,username,phone,website,filterUser,updatedUser,updatedUserLike,isLike,setIsLike}) => {
+const Cards = ({name,email,id,username,phone,website,filterUser,updatedUser,updatedUserLike,isLike}) => {
     const { Meta } = Card;
-    const [nameData, setNameData] = useState('')
-    const [emailData, setEmailData] = useState('')
-    const [phoneData, setPhoneData] = useState('')
-    const [websiteData, setWebsiteData] = useState('')
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [form] = Form.useForm();
+
+    useEffect(()=>{
+      form.setFieldsValue({
+        name,
+        email,
+        phone,
+        website
+      })
+    },[name,
+      email,
+      phone,
+      website,form])
 
   const showModal = () => {
     setIsModalVisible(true)
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-    let params={id,nameData ,emailData, phoneData, websiteData}
-    updatedUser(params)
-
-  };
-
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const onFinish = (values) => {
+    const {name, email,phone,website} = values
+    let params={id,name, email,phone,website}
+    //console.log(params)
+    updatedUser(params)
+    setIsModalVisible(false);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
   };
 
   const likeState = ()=>{
@@ -48,10 +62,11 @@ const Cards = ({name,email,id,username,phone,website,filterUser,updatedUser,upda
       <img
         alt="example"
         src={`https://avatars.dicebear.com/v2/avataaars/${username}.svg?options[mood][]=happy`}
+        style={{height:160,backgroundColor:"#D0D3D4"}}
       />
     }
     actions={[
-        <Button type='link' icon={isLike ? <HeartFilled style={{color:"red"}}/> : <HeartOutlined style={{color:"red"}}/>} onClick={()=>likeState()}></Button>,
+        <Button  type='link' icon={isLike ? <HeartFilled style={{color:"red"}}/> : <HeartOutlined style={{color:"red"}}/>} onClick={()=>likeState()}></Button>,
          <Button type='link' icon={<EditOutlined key="edit" />} onClick={()=>showModal()}></Button>,
         <Button type='link' icon={<DeleteFilled key="delete" />} onClick={()=>filterUser(id)}></Button>,
     ]}
@@ -59,21 +74,105 @@ const Cards = ({name,email,id,username,phone,website,filterUser,updatedUser,upda
     <Meta
       title={name}
       description={[<div>
-        <p><CloudFilled style={{color:"blueviolet"}} />  {email}</p>
-        <p><PhoneFilled style={{color:"blueviolet"}} />  {phone}</p>
-        <p><GoogleCircleFilled style={{color:"blueviolet"}} />  {website}</p>
+        <p><MailOutlined />  {email}</p>
+        <p><PhoneFilled />  {phone}</p>
+        <p><GlobalOutlined />  {website}</p>
       </div>]}
     />
   </Card>
-  <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-       <p>Please fill full inputs field </p>
-       <Input  value={nameData} onChange={(e)=> setNameData(e.target.value) } placeholder='enter new name'/>
-        <Input style={{marginTop:"10px"}} value={emailData} onChange={(e)=> setEmailData(e.target.value) } placeholder='enter new email'/>
-        <Input style={{marginTop:"10px"}} value={phoneData} onChange={(e)=> setPhoneData(e.target.value) } placeholder='enter new phone'/>
-        <Input style={{marginTop:"10px"}} value={websiteData} onChange={(e)=> setWebsiteData(e.target.value) } placeholder='enter new website'/>
+  <Modal 
+        title="Basic Modal" 
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={false}
+         >
+    <Form
+     name="basic"
+     labelCol={{
+       span: 8,
+     }}
+     wrapperCol={{
+       span: 16,
+     }}
+     initialValues={{
+       remember: true,
+     }}
+     onFinish={onFinish}
+     onFinishFailed={onFinishFailed}
+     autoComplete="off"
+     form={form}
+    >
+      <Form.Item
+        label="name"
+        name="name"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your username!',
+          },
+        ]}
+      >
+        <Input  />
+      </Form.Item>
+      <Form.Item
+        label="email"
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your email!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="phone"
+        name="phone"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your phone!',
+          },
+        ]}
+      >
+        <Input  />
+      </Form.Item>
+      <Form.Item
+        label="website"
+        name="website"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your website!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+       <Form.Item
+        wrapperCol={{
+          offset: 8,
+          span: 16,
+        }}
+      >
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item> 
+
+    </Form>
+      
       </Modal>
   </>
     )
 }
 
 export default Cards
+
+
+{/* <p>Please fill full inputs field </p>
+<Input  value={nameData} onChange={(e)=> setNameData(e.target.value) } placeholder='enter new name'/>
+ <Input style={{marginTop:"10px"}} value={emailData} onChange={(e)=> setEmailData(e.target.value) } placeholder='enter new email'/>
+ <Input style={{marginTop:"10px"}} value={phoneData} onChange={(e)=> setPhoneData(e.target.value) } placeholder='enter new phone'/>
+ <Input style={{marginTop:"10px"}} value={websiteData} onChange={(e)=> setWebsiteData(e.target.value) } placeholder='enter new website'/> */}
