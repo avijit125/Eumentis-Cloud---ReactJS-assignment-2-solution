@@ -26,9 +26,27 @@ const Home = () => {
        dispatch(deleteUser(filteredUsers))
     }
 
-    const updatedUser = ({id,emailData})=>{
+    const updatedUser = ({id,nameData,emailData,phoneData,websiteData})=>{
         const objIndex = users.findIndex(obj => obj.id === id);
-        const updatedObj = { ...users[objIndex], email: emailData};
+        const updatedObj = { ...users[objIndex],name: nameData ,email: emailData,phone: phoneData, website: websiteData};
+        const updatedUser = [
+            ...users.slice(0, objIndex),
+  updatedObj,
+  ...users.slice(objIndex + 1)
+        ]
+        //console.log(updatedUser)
+        dispatch(updateUser(updatedUser))
+    }
+
+    const updatedUserLike = ({id,isLike})=>{
+        const objIndex = users.findIndex(obj => obj.id === id);
+        if(isLike === false){
+            isLike = true
+        }else{
+            isLike = false
+        }
+        const updatedObj = { ...users[objIndex], islike:isLike};
+        console.log(updatedObj)
         const updatedUser = [
             ...users.slice(0, objIndex),
   updatedObj,
@@ -41,11 +59,10 @@ const Home = () => {
 
     return (
         <>
-        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-          
+        <Row >
             {users && users.map((item , index)=>(
-                <Col style={{marginTop:"1.6rem"}} span={6} offset={2}>
-                    <Cards key={item.id} name={item.name} email={item.email} id={item.id} username={item.username} filterUser={filterUser} updatedUser={updatedUser} />  
+                <Col style={{marginTop:"1.6rem"}} span={6}>
+                    <Cards key={item.id} name={item.name} email={item.email} id={item.id} username={item.username} phone={item.phone} website={item.website} filterUser={filterUser} updatedUser={updatedUser} updatedUserLike={updatedUserLike} isLike={item?.islike}  />  
                 </Col>
             ))}
       </Row>
